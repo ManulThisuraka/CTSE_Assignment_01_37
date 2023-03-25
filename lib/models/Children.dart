@@ -1,11 +1,11 @@
 import 'dart:ffi';
 
-class Recipe {
+class Children {
   String title;
   String description;
   Array ingredients;
 
-  Recipe({
+  Children({
     required this.title,
     required this.description,
     required this.ingredients,

@@ -1,10 +1,5 @@
-import 'dart:convert';
-
-//import 'package:ctse_lab03_inclass_01/screens/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../main.dart';
 import '../models/app_theme.dart';
@@ -164,6 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                                     const EdgeInsets.only(left: 16, right: 16),
                                 child: TextFormField(
                                   controller: _passwordController,
+                                  obscureText: true,
                                   style: const TextStyle(
                                       fontFamily: 'WorkSans',
                                       fontWeight: FontWeight.bold,
