@@ -61,7 +61,7 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
                 children: [
                   TextFormField(
                       controller: _recipeTitleController,
-                      decoration: const InputDecoration(labelText: 'Title'),
+                      decoration: const InputDecoration(labelText: 'Name'),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Field can not be empty";
@@ -72,7 +72,7 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
                   TextFormField(
                       controller: _recipeDescriptionController,
                       decoration:
-                          const InputDecoration(labelText: 'Description'),
+                          const InputDecoration(labelText: 'Birth Date'),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Field can not be empty";
