@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ctse_lab03_inclass_01/repositories/recipe_repository.dart';
+import 'package:ctse_lab03_inclass_01/repositories/children_repository.dart';
 import 'package:ctse_lab03_inclass_01/screens/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -22,12 +22,11 @@ class TabMainFourPage extends StatefulWidget {
 }
 
 class __TabMainFourPageState extends State<TabMainFourPage> {
-  final TextEditingController _recipeTitleController = TextEditingController();
-  final TextEditingController _recipeDescriptionController =
+  final TextEditingController _childrenTitleController =
+      TextEditingController();
+  final TextEditingController _childrenDescriptionController =
       TextEditingController();
 
-  // final CollectionReference _recipe =
-  //     FirebaseFirestore.instance.collection('recipes');
   final uid = FirebaseAuth.instance.currentUser?.uid;
   final formKey = GlobalKey<FormState>();
 
@@ -41,7 +40,7 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
     });
   }
 
-  // Create new recipe function
+  // Create new children function
   Future<void> _create(User user, [DocumentSnapshot? documentSnapshot]) async {
     await showModalBottomSheet(
         isScrollControlled: true,
@@ -60,7 +59,7 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextFormField(
-                      controller: _recipeTitleController,
+                      controller: _childrenTitleController,
                       decoration: const InputDecoration(labelText: 'Name'),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -70,7 +69,7 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
                         }
                       }),
                   TextFormField(
-                      controller: _recipeDescriptionController,
+                      controller: _childrenDescriptionController,
                       decoration:
                           const InputDecoration(labelText: 'Birth Date'),
                       validator: (value) {
@@ -91,9 +90,9 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
                     child: const Text('Create'),
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
-                        final String title = _recipeTitleController.text;
+                        final String title = _childrenTitleController.text;
                         final String description =
-                            _recipeDescriptionController.text;
+                            _childrenDescriptionController.text;
 
                         // Upload image to Firebase Storage
                         String? imageUrl;
@@ -106,11 +105,11 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
                               await storageRef.putFile(File(_imageFile!.path));
                           imageUrl = await snapshot.ref.getDownloadURL();
                         }
-                        await RecipeRepository()
-                            .addRecipe(title, description, imageUrl!);
+                        await ChildrenRepository()
+                            .addChildren(title, description, imageUrl!);
 
-                        _recipeTitleController.text = '';
-                        _recipeDescriptionController.text = '';
+                        _childrenTitleController.text = '';
+                        _childrenDescriptionController.text = '';
                         setState(() {
                           _imageFile = null;
                         });
@@ -125,11 +124,11 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
         });
   }
 
-  // Update a recipe function
+  // Update a children function
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {
     if (documentSnapshot != null) {
-      _recipeTitleController.text = documentSnapshot['title'];
-      _recipeDescriptionController.text = documentSnapshot['description'];
+      _childrenTitleController.text = documentSnapshot['title'];
+      _childrenDescriptionController.text = documentSnapshot['description'];
     }
 
     await showModalBottomSheet(
@@ -147,11 +146,11 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  controller: _recipeTitleController,
+                  controller: _childrenTitleController,
                   decoration: const InputDecoration(labelText: 'Title'),
                 ),
                 TextField(
-                  controller: _recipeDescriptionController,
+                  controller: _childrenDescriptionController,
                   decoration: const InputDecoration(labelText: 'Description'),
                 ),
                 const SizedBox(
@@ -160,15 +159,15 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
                 ElevatedButton(
                   child: const Text('Update'),
                   onPressed: () async {
-                    final String title = _recipeTitleController.text;
+                    final String title = _childrenTitleController.text;
                     final String description =
-                        _recipeDescriptionController.text;
+                        _childrenDescriptionController.text;
                     final String id = documentSnapshot!.id;
 
-                    await RecipeRepository()
-                        .updateRecipe(id, title, description);
-                    _recipeTitleController.text = '';
-                    _recipeDescriptionController.text = '';
+                    await ChildrenRepository()
+                        .updateChildren(id, title, description);
+                    _childrenTitleController.text = '';
+                    _childrenDescriptionController.text = '';
                     Navigator.of(context).pop();
                   },
                 )
@@ -178,18 +177,18 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
         });
   }
 
-  Future<void> dialogBox(String recipeId) {
+  Future<void> dialogBox(String childrenId) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Delete Recipe'),
-            content: const Text('Are you sure you want to delete this recipe?'),
+            content: const Text('Are you sure you want to delete this child?'),
             actions: <Widget>[
               TextButton(
                 child: const Text('Yes'),
                 onPressed: () {
-                  _delete(recipeId);
+                  _delete(childrenId);
                   Navigator.of(context).pop();
                 },
               ),
@@ -204,12 +203,12 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
         });
   }
 
-  // Delete a recipe
-  Future<void> _delete(String recipeId) async {
-    await RecipeRepository().deleteRecipe(recipeId);
+  // Delete a children
+  Future<void> _delete(String childrenId) async {
+    await ChildrenRepository().deleteChildren(childrenId);
 
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('You have successfully deleted a recipe')));
+        content: Text('You have successfully deleted a child')));
   }
 
   Future<String> uploadImage(var imageFile) async {
@@ -260,7 +259,7 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
         ),
         body: StreamBuilder(
           stream: FirebaseFirestore.instance
-              .collection('recipes')
+              .collection('children')
               .where('uid', isEqualTo: uid)
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
