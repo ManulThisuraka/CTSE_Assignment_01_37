@@ -22,9 +22,9 @@ class TabMainFourPage extends StatefulWidget {
 }
 
 class __TabMainFourPageState extends State<TabMainFourPage> {
-  final TextEditingController _childrenTitleController =
+  final TextEditingController _childrenNameController =
       TextEditingController();
-  final TextEditingController _childrenDescriptionController =
+  final TextEditingController _childrenBirthDateController =
       TextEditingController();
 
   final uid = FirebaseAuth.instance.currentUser?.uid;
@@ -59,7 +59,7 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextFormField(
-                      controller: _childrenTitleController,
+                      controller: _childrenNameController,
                       decoration: const InputDecoration(labelText: 'Name'),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -69,7 +69,7 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
                         }
                       }),
                   TextFormField(
-                      controller: _childrenDescriptionController,
+                      controller: _childrenBirthDateController,
                       decoration:
                           const InputDecoration(labelText: 'Birth Date'),
                       validator: (value) {
@@ -90,9 +90,9 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
                     child: const Text('Create'),
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
-                        final String title = _childrenTitleController.text;
-                        final String description =
-                            _childrenDescriptionController.text;
+                        final String name = _childrenNameController.text;
+                        final String birthDate =
+                            _childrenBirthDateController.text;
 
                         // Upload image to Firebase Storage
                         String? imageUrl;
@@ -106,10 +106,10 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
                           imageUrl = await snapshot.ref.getDownloadURL();
                         }
                         await ChildrenRepository()
-                            .addChildren(title, description, imageUrl!);
+                            .addChildren(name, birthDate, imageUrl!);
 
-                        _childrenTitleController.text = '';
-                        _childrenDescriptionController.text = '';
+                        _childrenNameController.text = '';
+                        _childrenBirthDateController.text = '';
                         setState(() {
                           _imageFile = null;
                         });
@@ -127,8 +127,8 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
   // Update a children function
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {
     if (documentSnapshot != null) {
-      _childrenTitleController.text = documentSnapshot['title'];
-      _childrenDescriptionController.text = documentSnapshot['description'];
+      _childrenNameController.text = documentSnapshot['name'];
+      _childrenBirthDateController.text = documentSnapshot['birthDate'];
     }
 
     await showModalBottomSheet(
@@ -146,12 +146,12 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  controller: _childrenTitleController,
-                  decoration: const InputDecoration(labelText: 'Title'),
+                  controller: _childrenNameController,
+                  decoration: const InputDecoration(labelText: 'Name'),
                 ),
                 TextField(
-                  controller: _childrenDescriptionController,
-                  decoration: const InputDecoration(labelText: 'Description'),
+                  controller: _childrenBirthDateController,
+                  decoration: const InputDecoration(labelText: 'Birth Date'),
                 ),
                 const SizedBox(
                   height: 20,
@@ -159,15 +159,15 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
                 ElevatedButton(
                   child: const Text('Update'),
                   onPressed: () async {
-                    final String title = _childrenTitleController.text;
-                    final String description =
-                        _childrenDescriptionController.text;
+                    final String name = _childrenNameController.text;
+                    final String birthDate =
+                        _childrenBirthDateController.text;
                     final String id = documentSnapshot!.id;
 
                     await ChildrenRepository()
-                        .updateChildren(id, title, description);
-                    _childrenTitleController.text = '';
-                    _childrenDescriptionController.text = '';
+                        .updateChildren(id, name, birthDate);
+                    _childrenNameController.text = '';
+                    _childrenBirthDateController.text = '';
                     Navigator.of(context).pop();
                   },
                 )
@@ -182,7 +182,7 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Delete Recipe'),
+            title: const Text('Delete a Child'),
             content: const Text('Are you sure you want to delete this child?'),
             actions: <Widget>[
               TextButton(
@@ -272,8 +272,8 @@ class __TabMainFourPageState extends State<TabMainFourPage> {
                   return Card(
                     margin: const EdgeInsets.all(10),
                     child: ListTile(
-                      title: Text(documentSnapshot['title']),
-                      subtitle: Text(documentSnapshot['description']),
+                      title: Text(documentSnapshot['name']),
+                      subtitle: Text(documentSnapshot['birthDate']),
                       leading: Image.network(
                         documentSnapshot['imageUrl'],
                         width: 70,

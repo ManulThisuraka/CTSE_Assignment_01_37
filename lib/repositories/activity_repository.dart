@@ -18,7 +18,6 @@ class ActivityRepository {
       "title": title,
       "description": description,
       "type": type,
-      "items": ["sample01", "sample02"],
       "date": DateTime.now(),
       "uid": uid
     });
@@ -31,7 +30,6 @@ class ActivityRepository {
       "title": title,
       "description": description,
       "type": type,
-      "items": ["sample01Updated", "sample02Updated"],
       "date": DateTime.now(),
     });
   }

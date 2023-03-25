@@ -1,15 +1,15 @@
 import 'dart:ffi';
 
-class Activity {
+class Lesson {
   String title;
   String description;
-  String type;
+  String submission;
   DateTime date;
 
-  Activity({
+  Lesson({
     required this.title,
     required this.description,
-    required this.type,
+    required this.submission,
     required this.date,
   });
 }

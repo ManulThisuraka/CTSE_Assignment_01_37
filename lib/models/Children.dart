@@ -1,13 +1,13 @@
 import 'dart:ffi';
 
 class Children {
-  String title;
-  String description;
-  Array ingredients;
+  String name;
+  String birthDate;
+  String imageUrl;
 
   Children({
-    required this.title,
-    required this.description,
-    required this.ingredients,
+    required this.name,
+    required this.birthDate,
+    required this.imageUrl,
   });
 }

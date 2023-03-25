@@ -1,15 +1,15 @@
 import 'dart:ffi';
 
-class Activity {
+class Food {
   String title;
   String description;
-  String type;
+  String allocatedDay;
   DateTime date;
 
-  Activity({
+  Food({
     required this.title,
     required this.description,
-    required this.type,
+    required this.allocatedDay,
     required this.date,
   });
 }

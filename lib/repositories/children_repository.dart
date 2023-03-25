@@ -12,11 +12,10 @@ class ChildrenRepository {
   }
 
   // Add new children
-  Future addChildren(String title, String description, String imageUrl) async {
+  Future addChildren(String name, String birthDate, String imageUrl) async {
     return await _children.add({
-      "title": title,
-      "description": description,
-      "ingredients": ["sample01", "sample02"],
+      "name": name,
+      "birthDate": birthDate,
       "uid": uid,
       "imageUrl": imageUrl,
     });
@@ -24,11 +23,10 @@ class ChildrenRepository {
 
   // Update children
   Future<void> updateChildren(
-      String id, String title, String description) async {
+      String id, String name, String birthDate) async {
     return await _children.doc(id).update({
-      "title": title,
-      "description": description,
-      "ingredients": ["sample01Updated", "sample02Updated"],
+      "name": name,
+      "birthDate": birthDate,
     });
   }
 
