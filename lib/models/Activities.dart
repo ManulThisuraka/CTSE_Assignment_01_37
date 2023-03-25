@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+//Activities
 class Activity {
   String title;
   String description;
