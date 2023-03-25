@@ -8,7 +8,7 @@ class ActivityRepository {
   final CollectionReference _activty =
       FirebaseFirestore.instance.collection('activty');
 
-  // Get all activity
+  // Get all activity 1
   Future getAllActivities() async {
     return _activty..where('uid', isEqualTo: uid).snapshots();
   }
